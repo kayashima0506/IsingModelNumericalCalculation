@@ -5,18 +5,18 @@ import java.util.Random;
 public class IsingModel {
 	public static void main(String[] args) {
 
-		int n = 50;
+		int n = 100;
 		int j = 1;
-		long m_mix = 1000000;
-		long m_max = 1100000;
+		double m_min = 1000000;
+		double m_max = 1100000;
 		int[][] spin = new int[n][n];
 
 		// ランダムにスピンの向きを決める
 		Random rand = new Random();
 		for (int i = 0; i < n; i++) {
 			for (int l = 0; l < n; l++) {
-				int randNum = rand.nextInt(10);
-				if (randNum < 5) {
+				double randNum = rand.nextDouble();
+				if (randNum > 0.5) {
 					spin[i][l] = -1;
 				} else {
 					spin[i][l] = 1;
@@ -25,10 +25,12 @@ public class IsingModel {
 		}
 
 		// 温度を変えながらエネルギーを計算する
-		double temp = 0;
+//		BigDecimal temp = new BigDecimal("0");
+//		BigDecimal tempAdd = new BigDecimal("0.1");
+		double temp = 1.0;
 		for (int tempIndex = 0; tempIndex < 30; tempIndex++) {
 			double sa2 = 0;
-			temp += 0.1;
+			temp +=0.1;
 
 			for (int step = 1; step < m_max; step++) {
 
@@ -73,7 +75,33 @@ public class IsingModel {
 						}
 					}
 				}
+
+				// エネルギーの差を計算し、反転後の新しい状態を採択するかどうかを判定する
+				double energyDif = flippedEnergy - energy;
+				// δE(energyDif) >= 0のとき、確率P...で採択する
+				if (energyDif >= 0) {
+					double prob = Math.exp(-1.0 * energyDif / temp);
+					double randNum = rand.nextDouble();
+					if (randNum > prob) {
+						spin[x][y] = saveState;
+					}
+				}
+
+				// 全体のエネルギー(向き)を算出する
+				if (step > m_min) {
+					double sa = 0;
+					for (int i = 0; i < n; i++) {
+						for (int l = 0; l < n; l++) {
+							sa += spin[i][l];
+						}
+					}
+					sa = sa / (n * n);
+					sa2 = Math.abs(sa) / (m_max - m_min) + sa2;
+				}
+
 			}
+
+			System.out.println(String.format("%.6f", sa2));
 		}
 
 	}

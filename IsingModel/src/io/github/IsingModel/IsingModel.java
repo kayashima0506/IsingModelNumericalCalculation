@@ -4,33 +4,58 @@ import java.util.Random;
 
 public class IsingModel {
 	public static void main(String[] args) {
+		
+		// 各パラメータ設定 --------------------------------------------------------------------------------------------
+		// n...N*Nのスピン// j...結合定数// m_min...解の下限 // m_max...解の上限
+		short n = 100;
+		short j = 1;
+		int m_min = 1000000;
+		int m_max = 1100000;
 
-		int n = 100;
-		int j = 1;
-		double m_min = 1000000;
-		double m_max = 1100000;
-		int[][] spin = new int[n][n];
+		// 温度を設定(0.1ずつ上げて計測)
+		// 固定する場合は"fixedTemp"をtrueに設定
+		double temp = 1.0;
+		boolean fixedTemp = false;
 
+		// 外場を加えるときに設定(外場なし：0、cos：1、cosh：2)
+		// 加える場合はcos/coshのxを設定(0<=x<360)
+		short exField = 0;
+		short x = 0;
+		
+		// -------------------------------------------------------------------------------------------------------------
+
+		// 以下、数値計算処理
 		// ランダムにスピンの向きを決める
-		Random rand = new Random();
-		for (int i = 0; i < n; i++) {
-			for (int l = 0; l < n; l++) {
-				double randNum = rand.nextDouble();
-				if (randNum > 0.5) {
-					spin[i][l] = -1;
-				} else {
-					spin[i][l] = 1;
-				}
+		int[][] spin = SetSpin.setSpinDirections(n);
+		
+		if(fixedTemp) {
+			if(exField ==0) {
+				// 温度変え外場なし
+				Temp.changeTemp(temp, n, spin, j, m_min, m_max);
+			}else if(exField ==1) {
+				// 温度変え外場cos
+				Temp.changeTemp(temp, n, spin, j, m_min, m_max);
+			}else if(exField ==2) {
+				// 温度変え外場cosh
+				Temp.changeTemp(temp, n, spin, j, m_min, m_max);
+			}
+		}else {
+			if(exField ==0) {
+				// 温度固定外場なし
+				Temp.fixedTemp(temp, n, spin, j, m_min, m_max);
+			}else if(exField ==1) {
+				// 温度固定外場cos
+				Temp.fixedTemp(temp, n, spin, j, m_min, m_max);
+			}else if(exField ==2) {
+				// 温度固定外場cosh
+				Temp.fixedTemp(temp, n, spin, j, m_min, m_max);
 			}
 		}
-
 		// 温度を変えながらエネルギーを計算する
-//		BigDecimal temp = new BigDecimal("0");
-//		BigDecimal tempAdd = new BigDecimal("0.1");
-		double temp = 1.0;
+		
 		for (int tempIndex = 0; tempIndex < 30; tempIndex++) {
 			double sa2 = 0;
-			temp +=0.1;
+			temp += 0.1;
 
 			for (int step = 1; step < m_max; step++) {
 
@@ -51,9 +76,9 @@ public class IsingModel {
 						}
 					}
 				}
-
+				Random rand = new Random();
 				// ランダムにスピンを選び、反転させる(判定前の状態は保持しておく)
-				int x = rand.nextInt(100) % n;
+				int x1 = rand.nextInt(100) % n;
 				int y = rand.nextInt(100) % n;
 				int saveState = spin[x][y];
 				spin[x][y] *= -1;

@@ -4,74 +4,33 @@ import java.util.Random;
 
 public class Calc {
 
-	public static double getEnergy(int[][] spin, int n, int j) {
+	public static double getEnergy(int[][] spin, int n, int j, double radian, int exField) {
 
 		double energy = 0;
-		for (int i = 0; i < n; i++) {
-
-			for (int l = 0; l < n; l++) {
-				// 隣のスピンが存在しない場合(端のスピン)は、0番目のスピンを参照する
-				if (i == n - 1 && l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][0]);
-				} else if (i == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][l + 1]);
-				} else if (l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][0]);
-				} else {
+		switch (exField) {
+		case 0:
+			for (int i = 0; i < n - 1; i++) {
+				for (int l = 0; l < n - 1; l++) {
 					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][l + 1]);
 				}
 			}
-		}
-		return energy;
-	}
-
-	public static double getEnergyAddCosExField(int[][] spin, int n, int j, double radian) {
-
-		double energy = 0;
-		for (int i = 0; i < n; i++) {
-
-			for (int l = 0; l < n; l++) {
-				// 隣のスピンが存在しない場合(端のスピン)は、0番目のスピンを参照する
-				if (i == n - 1 && l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][0]) + Math.cos(radian)
-							+ spin[i][j];
-				} else if (i == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][l + 1]) + Math.cos(radian)
-							+ spin[i][j];
-				} else if (l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][0]) + Math.cos(radian)
-							+ spin[i][j];
-				} else {
-					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][l + 1]) + Math.cos(radian)
-							+ spin[i][j];
+			break;
+		case 1:
+			for (int i = 0; i < n - 1; i++) {
+				for (int l = 0; l < n - 1; l++) {
+					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][l + 1]) + Math.cos(radian);
 				}
 			}
-		}
-		return energy;
-	}
-
-	public static double getEnergyAddCoshExField(int[][] spin, int n, int j, double radian) {
-
-		double energy = 0;
-		for (int i = 0; i < n; i++) {
-
-			for (int l = 0; l < n; l++) {
-				// 隣のスピンが存在しない場合(端のスピン)は、0番目のスピンを参照する
-				if (i == n - 1 && l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][0]) + Math.cosh(radian)
-							+ spin[i][j];
-				} else if (i == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[0][l] + spin[i][l] * spin[i][l + 1]) + Math.cosh(radian)
-							+ spin[i][j];
-				} else if (l == n - 1) {
-					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][0]) + Math.cosh(radian)
-							+ spin[i][j];
-				} else {
-					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][l + 1]) + Math.cosh(radian)
-							+ spin[i][j];
+			break;
+		case 2:
+			for (int i = 0; i < n - 1; i++) {
+				for (int l = 0; l < n - 1; l++) {
+					energy = energy - j * (spin[i][l] * spin[i + 1][l] + spin[i][l] * spin[i][l + 1]) + Math.cosh(radian);
 				}
 			}
+			break;
 		}
+
 		return energy;
 	}
 

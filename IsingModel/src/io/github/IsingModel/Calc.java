@@ -34,7 +34,7 @@ public class Calc {
 		return energy;
 	}
 
-	public static double getOverallEnergy(int[][] spin, double sa2, int n, int m_min, int m_max, int step) {
+	public static double getOverallEnergy(int[][] spin, double result, int n, int m_min, int m_max, int step) {
 
 		if (step > m_min) {
 			double sa = 0;
@@ -44,10 +44,10 @@ public class Calc {
 				}
 			}
 			sa = sa / (n * n);
-			sa2 = Math.abs(sa) / (m_max - m_min) + sa2;
+			result = Math.abs(sa) / (m_max - m_min) + result;
 		}
 
-		return sa2;
+		return result;
 	}
 
 	public static int[][] selectedState(int[][] spin, double energyDif, double temp, int x, int y, int saveState) {

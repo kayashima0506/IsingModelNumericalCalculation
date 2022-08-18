@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class NumericalCalculation {
 
-	public static void ising(short n, short j, int m_min, int m_max, double temp, boolean isTemp, short exField, short x) {
+	public static void ising(short n, short j, int m_min, int m_max, double temp, boolean isTemp, short tempLength, short exField, short x) {
 		
 		double result;
 		
@@ -12,19 +12,19 @@ public class NumericalCalculation {
 		int[][] spin = SetSpin.setSpinDirections(n);
 
 		if(isTemp) {
-			for (int tempIndex = 0; tempIndex < 30; tempIndex++) {
-				result = common(temp, n, spin, j, m_min, m_max, x, 1);
+			for (int tempIndex = 0; tempIndex < tempLength; tempIndex++) {
+				result = common(temp, n, spin, j, m_min, m_max, exField, x);
 				System.out.println(String.format("%.6f", result));
 			}
 			
 		}else {
-			result = common(temp, n, spin, j, m_min, m_max, x, 1);
+			result = common(temp, n, spin, j, m_min, m_max, exField, x);
 			System.out.println(String.format("%.6f", result));
 		}
 		
 	}
 
-	public static double common(double temp, short n, int[][] spin, int j, int m_min, int m_max, short x, int exField) {
+	public static double common(double temp, short n, int[][] spin, int j, int m_min, int m_max, int exField, short x) {
 
 		double result = 0;
 		temp += 0.1;

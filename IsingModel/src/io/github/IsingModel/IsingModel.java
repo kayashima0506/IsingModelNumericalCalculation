@@ -14,6 +14,7 @@ public class IsingModel {
 		// 温度を設定(0.1ずつ上げて計測)
 		boolean isTemp = true;
 		double temp = 1.0;
+		short tempLength = 20;
 
 		// 外場を加えるときに設定(外場なし：0、cos：1、cosh：2)
 		// 加える場合はcos/coshのxを設定(0<=x<360)
@@ -23,7 +24,7 @@ public class IsingModel {
 		// -------------------------------------------------------------------------------------------------------------
 
 		// 数値計算処理
-		NumericalCalculation.ising(n, j, m_min, m_max, temp, isTemp, exField, x);
+		NumericalCalculation.ising(n, j, m_min, m_max, temp, isTemp, tempLength, exField, x);
 
 	}
 }

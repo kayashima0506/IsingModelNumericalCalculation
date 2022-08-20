@@ -22,7 +22,7 @@ public class SetSpin {
 	}
 
 	public static int[][] setEdgeSpin(int[][] spin, int n) {
-		
+
 		// 隣のスピンが存在しない場合(端のスピン)は、0番目のスピンを参照させる
 		for (int l = 0; l < n - 1; l++) {
 			spin[n - 1][l] = spin[0][l];

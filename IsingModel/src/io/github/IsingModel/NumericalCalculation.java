@@ -4,30 +4,32 @@ import java.util.Random;
 
 public class NumericalCalculation {
 
-	public static void ising(short n, short j, int m_min, int m_max, double temp, boolean isTemp, short tempLength, short exField, short x) {
-		
-		double result;
-		
-		// ランダムにスピンの向きを決める
+	public static void ising(short n, short j, int m_min, int m_max, double temp, boolean isTemp, short tempLength, short exField,
+			short x) {
+
+		double result = 0;
+
+		// ランダムにスピンの向きを設定する
 		int[][] spin = SetSpin.setSpinDirections(n);
 
-		if(isTemp) {
+		if (isTemp) {
 			for (int tempIndex = 0; tempIndex < tempLength; tempIndex++) {
+				result = 0;
 				result = common(temp, n, spin, j, m_min, m_max, exField, x);
-				System.out.println(String.format("%.6f", result));
+				Output.outmsg(result, temp);
+				temp += 0.1;
 			}
-			
-		}else {
+
+		} else {
 			result = common(temp, n, spin, j, m_min, m_max, exField, x);
-			System.out.println(String.format("%.6f", result));
+			Output.outmsg(result, temp);
 		}
-		
+
 	}
 
 	public static double common(double temp, short n, int[][] spin, int j, int m_min, int m_max, int exField, short x) {
 
 		double result = 0;
-		temp += 0.1;
 		double radian = x * Math.PI / 180;
 
 		for (int step = 1; step < m_max; step++) {
